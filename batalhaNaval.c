@@ -48,6 +48,50 @@ void colocarNavioVertical(int tab[10][10], int lin, int col, int navio[3]) {
     
 }
 
+void colocarNavioDiagonal(int tab[10][10], int lin, int col, int navio[3]) {
+    if ((lin > 7) || (col < 0) || (lin < 0) || (col > 7)) {
+        printf("O navio não pode ser inserido fora do tabuleiro\n");
+        return;
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (tab[lin+i][col+i] != 0) {
+            printf("O navio não pode ser inserido sobre outro navio\n");
+            return;
+        }
+    }
+
+    // Coloca o navio no tabuleiro
+    for (int i = 0; i < 3; i++)
+    {
+        tab[lin+i][col+i] = navio[i];
+    }
+    
+}
+
+void colocarNavioDiagonalInvertido(int tab[10][10], int lin, int col, int navio[3]) {
+    if ((lin > 7) || (col < 2) || (lin < 0) || (col > 9)) {
+        printf("O navio não pode ser inserido fora do tabuleiro\n");
+        return;
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (tab[lin+i][col-i] != 0) {
+            printf("O navio não pode ser inserido sobre outro navio\n");
+            return;
+        }
+    }
+
+    // Coloca o navio no tabuleiro
+    for (int i = 0; i < 3; i++)
+    {
+        tab[lin+i][col-i] = navio[i];
+    }
+    
+}
+
 int main() {
     // Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
@@ -80,6 +124,7 @@ int main() {
     // 1 1 1 1 1
     // 0 0 1 0 0
 
+    // inicializa o tabuleiro com água (0)
     int tabuleiro[10][10] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -92,12 +137,20 @@ int main() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+    // define os navios (3 partes cada)
     int navio1[3] = {3,3,3};
     int navio2[3] = {3,3,3};
+    int navio3[3] = {3,3,3};
+    int navio4[3] = {3,3,3};
 
+    // insere os navios no tabuleiro
+    // argumentos: tabuleiro, linha, coluna, navio
     colocarNavioHorizontal(tabuleiro, 0, 3, navio1);
     colocarNavioVertical(tabuleiro, 4, 8, navio2);
+    colocarNavioDiagonal(tabuleiro, 7, 6, navio3);
+    colocarNavioDiagonalInvertido(tabuleiro, 7, 4, navio4);
 
+    // imprime o tabuleiro
     printf("   A B C D E F G H I J\n"); // imprime o nome de cada coluna
     for (int i = 0; i < 10; i++)
     {
@@ -108,9 +161,6 @@ int main() {
         }
         printf("\n");
     }
-    
-
-
     
     return 0;
 }
