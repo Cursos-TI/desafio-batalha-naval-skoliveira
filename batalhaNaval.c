@@ -92,6 +92,26 @@ void colocarNavioDiagonalInvertido(int tab[10][10], int lin, int col, int navio[
     
 }
 
+void executarHabilidade(int tab[10][10], int lin, int col, int habilidade[5][5], int inicioLinha) {
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (habilidade[i][j] == 1)
+            {
+                // calcula a posição no tabuleiro
+                int a = lin+i-inicioLinha;
+                int b = col+j-2;
+                if ((a < 0) || (a > 9) || (b < 0) || (b > 9))
+                {
+                    continue;   // pula posições fora do tabuleiro
+                }
+                tab[a][b] = 5;
+            }
+        }
+    }
+}
+
 int main() {
     // Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
@@ -137,6 +157,60 @@ int main() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+    // define as habilidades especiais (5x5)
+    int cone[5][5];
+    int coneInicioLinha = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if ((i < 3) && j >= 2 - i && j <= 2 + i)
+            {
+                cone[i][j] = 1;
+                
+            }
+            else
+            {
+                cone[i][j] = 0;
+            }
+        }
+    }
+
+    int cruz[5][5];
+    int cruzInicioLinha = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if ((i == 1) || ((i < 3) && (j == 2)))
+            {
+                cruz[i][j] = 1;
+                
+            }
+            else
+            {
+                cruz[i][j] = 0;
+            }
+        }
+    }
+
+    int octaedro[5][5];
+    int octaedroInicioLinha = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (((i == 1) && (j > 0) && (j < 4)) || ((i < 3) && (j == 2)))
+            {
+                octaedro[i][j] = 1;
+            }
+            else
+            {
+                octaedro[i][j] = 0;
+            }
+        }
+    }
+
     // define os navios (3 partes cada)
     int navio1[3] = {3,3,3};
     int navio2[3] = {3,3,3};
@@ -149,6 +223,12 @@ int main() {
     colocarNavioVertical(tabuleiro, 4, 8, navio2);
     colocarNavioDiagonal(tabuleiro, 7, 6, navio3);
     colocarNavioDiagonalInvertido(tabuleiro, 7, 4, navio4);
+
+    // executa as habilidades especiais
+    // argumentos: tabuleiro, linha, coluna, habilidade, linha de início da habilidade
+    executarHabilidade(tabuleiro, 0, 0, cone, coneInicioLinha);
+    executarHabilidade(tabuleiro, 4, 4, cruz, cruzInicioLinha);
+    executarHabilidade(tabuleiro, 1, 8, octaedro, octaedroInicioLinha);
 
     // imprime o tabuleiro
     printf("   A B C D E F G H I J\n"); // imprime o nome de cada coluna
